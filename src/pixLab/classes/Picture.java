@@ -125,9 +125,52 @@ public class Picture extends SimplePicture
 	  }
   }
   
+  /** Method to set red and green pixels to 0 */
+  public void keepOnlyBlue()
+  {
+	  Pixel[][] bluePixels = this.getPixels2D();
+	  for(int row = 0; row < bluePixels.length; row++)
+	  {
+		  for(int col = 0; col < bluePixels[0].length; col++)
+		  {
+			  bluePixels[row][col].setRed(0);
+			  bluePixels[row][col].setGreen(0);
+		  }
+	  }
+  }
+  
+  /** Method to set blue and green pixels to 0 */
+  public void keepOnlyRed()
+  {
+	  Pixel[][] redPixels = this.getPixels2D();
+	  for(int row = 0; row < redPixels.length; row++)
+	  {
+		  for(int col = 0; col < redPixels[0].length; col++)
+		  {
+			  redPixels[row][col].setBlue(0);
+			  redPixels[row][col].setGreen(0);
+		  }
+	  }
+  }
+  
+  /** Method to set the blur and red pixels to 0 */
+  public void keepOnlyGreen()
+  {
+	  Pixel[][] greenPixels = this.getPixels2D();
+	  for(int row = 0; row < greenPixels.length; row++)
+	  {
+		  for(int col = 0; col < greenPixels[0].length; col++)
+		  {
+			  greenPixels[row][col].setRed(0);
+			  greenPixels[row][col].setBlue(0);
+		  }
+	  }
+  }
+  
   /** Method that mirrors the picture around a 
     * vertical mirror in the center of the picture
-    * from left to right */
+    * from left to right
+    */
   public void mirrorVertical()
   {
     Pixel[][] pixels = this.getPixels2D();
@@ -252,7 +295,7 @@ public class Picture extends SimplePicture
   {
     Picture beach = new Picture("beach.jpg");
     beach.explore();
-    beach.zeroBlue();
+    beach.keepOnlyGreen();
     beach.explore();
   }
   
