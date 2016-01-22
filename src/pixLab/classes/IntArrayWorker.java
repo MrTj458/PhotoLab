@@ -99,5 +99,67 @@ public class IntArrayWorker
       }
     }
   }
+  
+  /**
+   * gets the number of times the passed integer is found in the matrix.
+   * @param num to check for.
+   * @return number of times that number occurs.
+   */
+  public int getCount(int num)
+  {
+	  int count = 0;
+	  
+	  for(int row = 0; row < matrix.length; row++)
+	  {
+		  for(int col = 0; col < matrix[0].length; col++)
+		  {
+			  if(matrix[row][col] == num)
+			  {
+				  count++;
+			  }
+		  }
+	  }
+	  
+	  return count;
+  }
+  
+  /**
+   * gets the largest number .
+   * @return Largest number in the matrix.
+   */
+  public int getLargest()
+  {
+	  int largestNum = 0;
+	  
+	  for(int row = 0; row < matrix.length; row++)
+	  {
+		  for(int col = 0; col < matrix[0].length; col++)
+		  {
+			  if(matrix[row][col] > largestNum)
+			  {
+				  largestNum = matrix[row][col];
+			  }
+		  }
+	  }
+	  
+	  return largestNum;
+  }
+  
+  /**
+   * gets the total for all ints in the passed colum of the matrix.
+   * @param colum to add up.
+   * @return total
+   */
+  public int getColTotal(int colum)
+  {
+	  int colTotal = 0;
+	  
+	  for(int row = 0; row < matrix.length; row++)
+	  {
+		  colTotal += matrix[row][colum];
+	  }
+	  
+	  return colTotal;
+  }
  
 }
