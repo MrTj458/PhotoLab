@@ -167,6 +167,26 @@ public class Picture extends SimplePicture
 	  }
   }
   
+  public void grayScale()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  for(int row = 0; row < pixels.length; row++)
+	  {
+		  for(int col = 0; col < pixels[0].length; col++)
+		  {
+			  int red = pixels[row][col].getRed();
+			  int green = pixels[row][col].getGreen();
+			  int blue = pixels[row][col].getBlue();
+			  
+			  int newValue = (red + blue + green) / 3;
+			  
+			  pixels[row][col].setRed(newValue);
+			  pixels[row][col].setGreen(newValue);
+			  pixels[row][col].setBlue(newValue);
+		  }
+	  }
+  }
+  
   /** Method that mirrors the picture around a 
     * vertical mirror in the center of the picture
     * from left to right
@@ -186,6 +206,85 @@ public class Picture extends SimplePicture
         rightPixel.setColor(leftPixel.getColor());
       }
     } 
+  }
+  
+  public void mirrorVerticalRightToLeft()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Pixel leftPixel = null;
+	  Pixel rightPixel = null;
+	  int width = pixels[0].length;
+	  
+	  for(int row = 0; row < pixels.length; row++)
+	  {
+		  for(int col = pixels[0].length - 1; col > width / 2; col--)
+		  {
+			  rightPixel = pixels[row][col];
+			  leftPixel = pixels[row][(width / 2) - (col - width / 2)];
+			  leftPixel.setColor(rightPixel.getColor());
+		  }
+	  }
+  }
+  
+  public void mirrorHorizontal()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Pixel topPixel = null;
+	  Pixel bottomPixel = null;
+	  int height = pixels.length;
+	  for(int row = 0; row < height / 2; row++)
+	  {
+		  for(int col = 0; col < pixels[0].length; col++)
+		  {
+			  topPixel = pixels[row][col];
+			  bottomPixel = pixels[height - 1 - row][col];
+			  bottomPixel.setColor(topPixel.getColor());
+		  }
+	  }
+  }
+  
+  public void randomColor()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  for(Pixel[] row : pixels)
+	  {
+		  for(Pixel current : row)
+		  {
+			  int randomRed = (int) (Math.random() * 256);
+			  int randomGreen = (int) (Math.random() * 256);
+			  int randomBlue = (int) (Math.random() * 256);
+			  current.setRed(randomRed);
+			  current.setGreen(randomGreen);
+			  current.setBlue(randomBlue);
+		  }
+	  }
+  }
+  
+  public void randomChange()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  for(Pixel[] row : pixels)
+	  {
+		  for(Pixel current : row)
+		  {
+			  int randomRedScale = (int) (Math.random() * 50);
+			  int randomGreenScale = (int) (Math.random() * 50);
+			  int randomBlueScale = (int) (Math.random() * 50);
+			  int plusOrMinus = (int) (Math.random() * 2);
+			  if(plusOrMinus > 0)
+			  {
+				  current.setRed((current.getRed() + randomRedScale) % 256);
+				  current.setGreen((current.getGreen() + randomGreenScale) % 256);
+				  current.setBlue((current.getBlue() + randomBlueScale) % 256);
+			  }
+			  else
+			  {
+				  current.setRed((current.getRed() - randomRedScale) % 256);
+				  current.setGreen((current.getGreen() - randomGreenScale) % 256);
+				  current.setBlue((current.getBlue() - randomBlueScale) % 256);
+			  }
+		  }
+	  }
   }
   
   /** Mirror just part of a picture of a temple */
@@ -244,20 +343,14 @@ public class Picture extends SimplePicture
   }
 
   /** Method to create a collage of several pictures */
-  public void createCollage()
+  public void createCollage(Picture img)
   {
-    Picture flower1 = new Picture("flower1.jpg");
-    Picture flower2 = new Picture("flower2.jpg");
-    this.copy(flower1,0,0);
-    this.copy(flower2,100,0);
-    this.copy(flower1,200,0);
-    Picture flowerNoBlue = new Picture(flower2);
-    flowerNoBlue.zeroBlue();
-    this.copy(flowerNoBlue,300,0);
-    this.copy(flower1,400,0);
-    this.copy(flower2,500,0);
-    this.mirrorVertical();
-    this.write("collage.jpg");
+	  Picture collageCar = new Picture("audiR8.jpg");
+	  img.randomChange();
+	  img.mirrorVerticalRightToLeft();
+	  img.zeroRed();
+	  img.mirrorHorizontal();
+	  this.write("TrevorsCollage.jpg");
   }
   
   
@@ -293,10 +386,13 @@ public class Picture extends SimplePicture
    */
   public static void main(String[] args) 
   {
-    Picture beach = new Picture("beach.jpg");
-    beach.explore();
-    beach.keepOnlyGreen();
-    beach.explore();
+    Picture car = new Picture("audiR8.jpg");
+//    car.grayScale();
+//    car.zeroRed();
+//    car.mirrorVertical();
+//    car.copy(car, car.getWidth() / 2, car.getHeight() / 2);
+    car.createCollage(car);
+    car.explore();
   }
   
 } // this } is the end of class Picture, put all new methods before this
