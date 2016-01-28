@@ -306,6 +306,24 @@ public class Picture extends SimplePicture
 	  }
   }
   
+  public void mirrorArms()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Pixel topPixel = null;
+	  Pixel bottomPixel = null;
+	  int mirrorPoint = 191;
+	  
+	  for(int row = 157; row < mirrorPoint; row++)
+	  {
+		  for(int col = 0; col < pixels[0].length; col++)
+		  {
+			  topPixel = pixels[row][col];
+			  bottomPixel = pixels[mirrorPoint - row + mirrorPoint][col];
+			  bottomPixel.setColor(topPixel.getColor());
+		  }
+	  }
+  }
+  
   /** Mirror just part of a picture of a temple */
   public void mirrorTemple()
   {
@@ -406,11 +424,9 @@ public class Picture extends SimplePicture
   public static void main(String[] args) 
   {
     Picture car = new Picture("audiR8.jpg");
-    car.mirrorHorizontalBottonToTop();
+    car.randomChange();
     car.explore();
-    Picture car2 = new Picture("audiR8.jpg");
-    car2.mirrorHorizontal();
-    car2.explore();
+
   }
   
 } // this } is the end of class Picture, put all new methods before this
