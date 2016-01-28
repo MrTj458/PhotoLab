@@ -232,6 +232,7 @@ public class Picture extends SimplePicture
 	  Pixel topPixel = null;
 	  Pixel bottomPixel = null;
 	  int height = pixels.length;
+	  
 	  for(int row = 0; row < height / 2; row++)
 	  {
 		  for(int col = 0; col < pixels[0].length; col++)
@@ -239,6 +240,24 @@ public class Picture extends SimplePicture
 			  topPixel = pixels[row][col];
 			  bottomPixel = pixels[height - 1 - row][col];
 			  bottomPixel.setColor(topPixel.getColor());
+		  }
+	  }
+  }
+  
+  public void mirrorHorizontalBottonToTop()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Pixel topPixel = null;
+	  Pixel bottomPixel = null;
+	  int height = pixels.length;
+	  
+	  for(int row = pixels.length - 1; row > height / 2; row--)
+	  {
+		  for(int col = 0; col < pixels[0].length - 1; col++)
+		  {
+			  bottomPixel = pixels[row][col];
+			  topPixel = pixels[(height / 2) - (row - height / 2)][col];
+			  topPixel.setColor(bottomPixel.getColor());
 		  }
 	  }
   }
@@ -387,12 +406,11 @@ public class Picture extends SimplePicture
   public static void main(String[] args) 
   {
     Picture car = new Picture("audiR8.jpg");
-//    car.grayScale();
-//    car.zeroRed();
-//    car.mirrorVertical();
-//    car.copy(car, car.getWidth() / 2, car.getHeight() / 2);
-    car.createCollage(car);
+    car.mirrorHorizontalBottonToTop();
     car.explore();
+    Picture car2 = new Picture("audiR8.jpg");
+    car2.mirrorHorizontal();
+    car2.explore();
   }
   
 } // this } is the end of class Picture, put all new methods before this
