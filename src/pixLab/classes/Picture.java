@@ -306,6 +306,21 @@ public class Picture extends SimplePicture
 	  }
   }
   
+  public void negate()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  
+	  for(int row = 0; row < pixels.length; row++)
+	  {
+		  for(int col = 0; col < pixels[0].length; col++)
+		  {
+			  pixels[row][col].setRed(255 - pixels[row][col].getBlue());
+			  pixels[row][col].setGreen(255 - pixels[row][col].getGreen());
+			  pixels[row][col].setBlue(255 - pixels[row][col].getRed());
+		  }
+	  }
+  }
+  
   public void mirrorArms()
   {
 	  Pixel[][] pixels = this.getPixels2D();
@@ -346,6 +361,24 @@ public class Picture extends SimplePicture
         rightPixel.setColor(leftPixel.getColor());
       }
     }
+  }
+  
+  public void mirrorGull()
+  {
+	  Pixel[][] pixels = this.getPixels2D();
+	  Pixel leftPixel = null;
+	  Pixel rightPixel = null;
+	  int count = 0;
+	  
+	  for(int row = 230; row < 321; row++)
+	  {
+		  for(int col = 235;  col < 345; col++)
+		  {
+			  leftPixel = pixels[row][col];
+			  rightPixel = pixels[row][345 - col + 345];
+			  rightPixel.setColor(leftPixel.getColor());
+		  }
+	  }
   }
   
   /** copy from the passed fromPic to the
@@ -417,6 +450,51 @@ public class Picture extends SimplePicture
     }
   }
   
+  public void edgeDetection2(int edgeDist)
+  {
+	    Pixel leftPixel = null;
+	    Pixel rightPixel = null;
+	    Pixel topPixel = null;
+	    Pixel botPixel = null;
+	    Pixel[][] pixels = this.getPixels2D();
+	    Color rightColor = null;
+	    Color botColor = null;
+	    for (int row = 0; row < pixels.length; row++)
+	    {
+	      for (int col = 0; col < pixels[0].length-1; col++)
+	      {
+	        leftPixel = pixels[row][col];
+	        rightPixel = pixels[row][col+1];
+	        rightColor = rightPixel.getColor();
+	        if (leftPixel.colorDistance(rightColor) > edgeDist)
+	        {
+	          leftPixel.setColor(Color.BLACK);
+	        }
+	        else
+	        {
+	          leftPixel.setColor(Color.WHITE);
+	        }
+	      }
+	    }
+	    
+	    for(int row = 0; row < pixels.length-1; row++)
+	    {
+	    	for(int col = 0; col < pixels[0].length; col++)
+	    	{
+		        topPixel = pixels[row][col];
+		        botPixel = pixels[row+1][col];
+		        botColor = botPixel.getColor();
+		        if(topPixel.colorDistance(botColor) > edgeDist)
+		        {
+		        	topPixel.setColor(Color.BLACK);
+		        }
+		        else
+		        {
+		        	topPixel.setColor(Color.WHITE);
+		        }
+	    	}
+	    }
+  }
   
   /* Main method for testing - each class in Java can have a main 
    * method 
@@ -424,9 +502,8 @@ public class Picture extends SimplePicture
   public static void main(String[] args) 
   {
     Picture car = new Picture("audiR8.jpg");
-    car.randomChange();
+    car.edgeDetection2(3);
     car.explore();
-
   }
   
 } // this } is the end of class Picture, put all new methods before this
