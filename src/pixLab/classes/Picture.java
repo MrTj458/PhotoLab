@@ -262,6 +262,11 @@ public class Picture extends SimplePicture
 	  }
   }
   
+  public void mirrorDiagonal()
+  {
+	  
+  }
+  
   public void randomColor()
   {
 	  Pixel[][] pixels = this.getPixels2D();
@@ -502,7 +507,8 @@ public class Picture extends SimplePicture
   public static void main(String[] args) 
   {
     Picture car = new Picture("audiR8.jpg");
-    car.edgeDetection2(3);
+    car.randomChange();
+    car.grayScale();
     car.explore();
   }
   
